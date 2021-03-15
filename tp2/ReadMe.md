@@ -143,7 +143,7 @@ Autrement dit, le développeur déclare qu’une lecture va être suivie d’une
 | t4| ------ |```UPDATE EMP SET SAL = 3800 WHERE ENAME ='Mohamed';```|update is impossible because the isolated image that user2 took have the table locked |
 | t5| ```Insert into EMP (EMPNO,ENAME,JOB,MGR,HIREDATE,COMM,DEPTNO) values ('9999','Maaoui','Magician',null,to_date('17/02/2021','DD/MM/RR'),null,'10');``` |------|------|
 | t6| ```COMMIT;```|------ |the image that user2 is totally isolated of the main server so the lock remains even after the commitment|
-| t7|```SELECT ENAME, SAL FROM EMP WHERE ENAME IN ('Mohamed','Hichem', 'Maaoui');```| ------ |user1 updates are shown
+| t7|```SELECT ENAME, SAL FROM EMP WHERE ENAME IN ('Mohamed','Hichem', 'Maaoui');```| ------ |user1 updates are shown|
 |
 | t8| ------ |```SELECT ENAME, SAL FROM EMP WHERE ENAME IN ('Mohamed','Hichem', 'Maaoui');```|user1 updates aren't shown in this query|
 | t9| ```Commit;``` |------|------|
