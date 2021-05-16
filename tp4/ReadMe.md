@@ -247,7 +247,9 @@ pour l'equipe test:
 grant connect,create session,select any table to test;
 ---
 ```
-```sql
+```
+pour l'equipe DevSecOps:
+grant all privileges to devsecops with admin option;
 ---
 ```
 
@@ -256,24 +258,32 @@ grant connect,create session,select any table to test;
    - **Attribuer à chaque utilisateur, le rôle qui lui correspond:** 
   
 
-```sql
+```
+GRANT dev
+TO dev1, dev2;
 ---
 ```
-```sql
+```
+GRANT test
+TO tester1, tester2;
 ---
 ```
-```sql
+```
+GRANT devsecops
+TO devsecops1, devsecops2;
 ---
 ```
 
    - **Limiter l'accès pour les testeurs de sorte qu'ils n'accèdent qu'à la table des employés "EMP":** 
   
 
-```sql
+```
+revoke select any table from test;
 ---
 ```
 
- ```sql
+ ```
+grant select on emp to test;
 ---
 ```
  
@@ -282,7 +292,9 @@ grant connect,create session,select any table to test;
    - **Autoriser tous les utilisateurs sur le système pour interroger les données de la table EMP :** 
   
 
- ```sql
+ ```
+grant select on emp to dev,test,devsecops;
+ 
 ---
 ```
 
@@ -290,7 +302,8 @@ grant connect,create session,select any table to test;
 
  
  
-```sql
+```
+revoke all privileges on emp from devsecops;
 ---
 ```
 
@@ -308,7 +321,18 @@ grant connect,create session,select any table to test;
 
 
 
-```sql 
+```
+CREATE PROFILE dev 
+LIMIT
+SESSIONS_PER_USER UNLIMITED
+CPU_PER_SESSION 10000
+CPU_PER_CALL 1000
+CONNECT_TIME 45
+LOGICAL_READS_PER_SESSION DEFAULT
+LOGICAL_READS_PER_CALL 1000
+PRIVATE_SGA 25K
+PASSWORD_LIFE_TIME 60
+PASSWORD_REUSE_TIME 10;
 ---
 ```
 
@@ -325,7 +349,19 @@ grant connect,create session,select any table to test;
   * ***Taille maximale de l'SGA privée:*** ***25K***
   * ***Durée de vie en jours du mot de passe:*** ***60***
   * ***Nombre maximal de réutilisations de mot de passe:*** ***10***
-```sql 
+```
+
+CREATE PROFILE test 
+LIMIT
+SESSIONS_PER_USER 5
+CPU_PER_SESSION UNLIMITED
+CPU_PER_CALL 3000
+CONNECT_TIME 45
+LOGICAL_READS_PER_SESSION DEFAULT
+LOGICAL_READS_PER_CALL 1000
+PRIVATE_SGA 25K
+PASSWORD_LIFE_TIME 60
+PASSWORD_REUSE_TIME 10;
 ---
 ```
 
@@ -340,12 +376,24 @@ grant connect,create session,select any table to test;
   * ***Durée de vie en jours du mot de passe:*** ***60***
   * ***Nombre maximal de réutilisations de mot de passe:*** ***10***
 
-```sql 
+```
+CREATE PROFILE devsecops 
+LIMIT
+SESSIONS_PER_USER UNLIMITED
+CPU_PER_SESSION UNLIMITED
+CPU_PER_CALL 3000
+CONNECT_TIME 3600
+LOGICAL_READS_PER_SESSION DEFAULT
+LOGICAL_READS_PER_CALL 5000
+PRIVATE_SGA 80K
+PASSWORD_LIFE_TIME 60
+PASSWORD_REUSE_TIME 10;
 ---
 ```
 
   - **Attribuer à l'utilisateur "dev1", le profile qui lui correspond:** 
-```sql
+```
+alter user dev1 profile dev;
 ---
 ```
 
