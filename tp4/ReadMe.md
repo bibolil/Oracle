@@ -169,7 +169,16 @@ ________________________________________________________________________________
       * [ username: devsecops2, password: devsecops2 ]
 
 
-```sql
+```
+Equipe Dev :
+create user dev1 identified by dev1;
+create user dev2 identified by dev2;
+Equipe Test :
+create user tester1 identified tester1;
+create user tester2 identified BY tester2;
+Equipe DevSecOps : 
+create userdevsecops1 identified BY devsecops1;
+create user devsecops2 identified BY devsecops2;
 ---
 ```
   --->  **Une fois qu'un utilisateur est créé, le DBA peut octroyer des privilèges de système spécifiques à cet utilisateur.**
@@ -183,7 +192,8 @@ ________________________________________________________________________________
      * Création de session.
      * Création,lecture, modification de structure et suppression de tables.
 
-```sql
+```
+grant create procedure,create view,create sequence,create session,create any table,select any table,alter any table,drop any table to dev1;
 ---
 ```
 
@@ -192,7 +202,8 @@ ________________________________________________________________________________
  
    - **Révoquer tous les privilèges associès à l'utilisateur dev1 :** 
 
-```sql
+```
+revoke create procedure,create view,create sequence,create session,create any table,select any table,alter any table,drop any table from dev1;
 ---
 ```
 
@@ -215,13 +226,25 @@ ________________________________________________________________________________
      
      C) Le rôle de l'équipe DevSecOps permet d'avoir tous les privilèges avec mode administrateur de la base:  
 
-```sql
+```
+creation des roles:
+
+create role dev;
+create role test;
+create role devsecops;
 ---
 ```
-```sql
+
+```
+attribtuion des critéres:
+pour l'equipe dev:
+grant create procedure,create view,create sequence,create session,create any table,select any table,alter any table,drop any table to dev;
+
 ---
 ```
-```sql
+```
+pour l'equipe test:
+grant connect,create session,select any table to test;
 ---
 ```
 ```sql
